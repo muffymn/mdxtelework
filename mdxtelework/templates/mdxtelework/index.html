@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDX Telework</title>
+    
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+</head>
+<body>
+    <header>
+        <h1>MDX Telework</h1>
+    </header>
+
+    <nav>
+        <a href="#">Pending</a>
+        <a href="#">Request</a>
+        <a href="#">History</a>
+        <a href="#">Profile</a>
+    </nav>
+
+    
+    <div id="telework-form">
+        <h2>Telework Request Form</h2>
+        <form id="telework-request-form">
+            <div>
+                <label for="telework-date">Telework requested for:</label>
+                <input type="date" id="telework-date" name="telework-date" required>
+            </div>
+
+            <div>
+                <label for="bench-assigned">Bench assigned:</label>
+                <input type="text" id="bench-assigned" name="bench-assigned" list="bench-options" required>
+                <datalist id="bench-options">
+                    <option value="apple">
+                    <option value="banana">
+                    <option value="carrot">
+                    <option value="durian">
+                </datalist>
+            </div>
+
+            <div>
+                <label for="completion-date">Completion report for:</label>
+                <input type="date" id="completion-date" name="completion-date" required>
+            </div>
+
+            <div>
+                <label for="time-blocks">Time Blocks:</label>
+                <table id="time-blocks">
+                    <thead>
+                        <tr>
+                            <th>Time block</th>
+                            <th>Task/Break</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be dynamically added here -->
+                    </tbody>
+                </table>
+                <button type="button" onclick="addTimeBlockRow()">Add Row</button>
+            </div>
+
+            <div>
+                <label for="note">Note (optional):</label>
+                <textarea id="note" name="note" rows="4"></textarea>
+            </div>
+
+            <div>
+                <button type="submit">Submit Request</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div id='calendar' class="calendar-container"></div>
+
+    <script src="/static/telework-form.js"></script>
+    <script src="/static/calendar.js"></script>
+</body>
+</html>
