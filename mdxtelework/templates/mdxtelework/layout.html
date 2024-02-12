@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>
-            mdxtelework
-        </title>
-    </head>
-    <body>
-        {% block body %}
-        {% endblock %}
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDX Telework</title>
+    
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+</head>
+
+
+<body>
+    <header>
+        <h1>MDX Telework</h1>
+    </header>
+
+    <nav>
+        <a href="#">Pending</a>
+        <a href="{% url 'telework_request' %}">Request</a>
+        <a href="#">History</a>
+        <a href="#">Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    
+    {% block body %}
+    {% endblock %}
+
+
+    
+</body>
 </html>
+
+
+
