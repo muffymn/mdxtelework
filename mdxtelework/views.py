@@ -1,7 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .models import TeleworkRequest
+import json
+from django.contrib import messages
 
 # Create your views here.
 def index(request):
@@ -30,4 +33,32 @@ def logout_view(request):
     })
 
 def telework_request(request):
-    return render(request, "mdxtelework/telework_request.html")
+    bench_choices = TeleworkRequest.BENCH_CHOICES
+    if request.method == "POST":
+        telework_date = request.POST.get('telework-date')
+        bench_assigned = request.POST.get('bench-assigned')
+        completion_date = request.POST.get('completion-date')
+        #note = request.POST.get('note')
+
+        time_blocks = []
+        start_times = request.POST.getlist('start-time')
+        end_times = request.POST.getlist('end-time')
+        activities = request.POST.getlist('activity')
+        
+        for start_time, end_time, activity in zip(start_times, end_times, activities):
+            if start_time and end_time and activity:
+                time_blocks.append({'start_time': start_time, 'end_time': end_time, 'activity': activity})
+        
+        telework_request = TeleworkRequest.objects.create(
+            user=request.user,
+            date_requested=telework_date,
+            completion_date=completion_date,
+            bench_assigned=bench_assigned,
+            completion_report=json.dumps(time_blocks),
+            #note=note
+            #other bench reason?
+        )
+        
+        messages.success(request, 'Telework request submitted successfully!')
+        return redirect('telework_request')
+    return render(request, "mdxtelework/telework_request.html", {'bench_choices': bench_choices})

@@ -4,13 +4,18 @@
 
 {% block body %}
 
-{% if message %}
-    <div>{{ message }}</div>
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
 {% endif %}
 
 <div id="telework-form">
     <h2>Telework Request Form</h2>
-    <form id="telework-request-form">
+    <form id="telework-request-form" method="post">
+        {% csrf_token %}
         <div>
             <label for="telework-date">Telework requested for:</label>
             <input type="date" id="telework-date" name="telework-date" required>
@@ -18,14 +23,13 @@
 
         <div>
             <label for="bench-assigned">Bench assigned:</label>
-            <input type="text" id="bench-assigned" name="bench-assigned" list="bench-options" required>
-            <datalist id="bench-options">
-                <option value="apple">
-                <option value="banana">
-                <option value="carrot">
-                <option value="durian">
-            </datalist>
+            <select id="bench-assigned" name="bench-assigned" required>
+                {% for choice in bench_choices %}
+                    <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
         </div>
+        
 
         <div>
             <label for="completion-date">Completion report for:</label>
@@ -37,7 +41,8 @@
             <table id="time-blocks">
                 <thead>
                     <tr>
-                        <th>Time block</th>
+                        <th>Start</th>
+                        <th>Finish</th>
                         <th>Task/Break</th>
                     </tr>
                 </thead>
