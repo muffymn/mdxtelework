@@ -1,0 +1,54 @@
+{% extends "mdxtelework/layout.html" %}
+
+
+
+{% block body %}
+
+
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+
+<div class="buttons">
+    <button id="pending-button">Pending</button>
+    <button id="previous-button">Previous</button>
+</div>
+
+{% if user_requests %}
+    <div class="card-container">
+        {% for request in user_requests %}
+            <div class="card">
+                <div class="card-header">
+                    <h3>Request for {{ request.date_requested }}</h3>
+                </div>
+                <div class="card-body">
+                    <p><strong>Bench Assigned:</strong> {{ request.bench_assigned }}</p>
+                    <p><strong>Completion Date:</strong> {{ request.completion_date }}</p>
+                    <p><strong>Time Blocks and Tasks:</strong></p>
+                    <ul>
+                        {% for block in request.completion_report %}
+                            <li>{{ block.start_time }} - {{ block.end_time }}: {{ block.activity }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No pending requests found.</p>
+{% endif %}
+<script>
+    const pendingRequestsUrl = "{% url 'pending_requests' %}";
+    const previousRequestsUrl = "{% url 'previous_requests' %}";
+</script>
+<script src="/static/pending-previous-requests.js"></script>
+
+{% endblock %}

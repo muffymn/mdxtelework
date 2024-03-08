@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/styles.css">
 
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js'></script>
+   
 </head>
 
 
@@ -17,7 +18,7 @@
     </header>
 
     <nav>
-        <a href="#">Pending</a>
+        <a href="{% url 'pending_requests' %}">Pending</a>
         <a href="{% url 'telework_request' %}">Request</a>
         <a href="#">History</a>
         <a href="#">Profile</a>

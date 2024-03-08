@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import TeleworkRequest
 import json
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def index(request):
@@ -54,7 +55,7 @@ def telework_request(request):
             date_requested=telework_date,
             completion_date=completion_date,
             bench_assigned=bench_assigned,
-            completion_report=json.dumps(time_blocks),
+            completion_report=time_blocks,
             #note=note
             #other bench reason?
         )
@@ -62,3 +63,13 @@ def telework_request(request):
         messages.success(request, 'Telework request submitted successfully!')
         return redirect('telework_request')
     return render(request, "mdxtelework/telework_request.html", {'bench_choices': bench_choices})
+
+@login_required
+def pending_requests(request):
+    user_requests = TeleworkRequest.objects.filter(user=request.user, status='pending')
+    return render(request, "mdxtelework/pending_requests.html", {'user_requests': user_requests})
+
+@login_required
+def previous_requests(request):
+    user_requests = TeleworkRequest.objects.filter(user=request.user, status__in=['approved', 'rejected'])
+    return render(request, "mdxtelework/pending_requests.html", {'user_requests': user_requests})
